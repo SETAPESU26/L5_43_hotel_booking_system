@@ -1,51 +1,111 @@
 # Lab 5: Static Code Analysis — Hotel Booking System
 
-**Your file:** `hotel_booking_system.py`
+## 1. Project Overview
 
-Follow the lab handout for the full instructions.
+This project focuses on improving the code quality, security, and maintainability of a Python-based Hotel Booking System using static code analysis tools.
 
-## About the program
+The purpose of this lab is to identify potential programming errors, insecure coding practices, and code-style violations, fix the identified issues, and rerun the analysis tools to verify the improvements.
 
-A hotel room reservation and inventory manager. It tracks room types, handles guest bookings, releases room reservations, computes seasonal surge pricing, and exports hotel ledgers.
+## 2. About the Program
 
-The code works, but only just. It has quality, style and security problems of the kind Pylint, Flake8 and Bandit are built to find.
+The Hotel Booking System manages hotel room reservations and inventory. The original program is analyzed and improved while preserving its intended functionality.
 
-## What to do
+## 3. Objectives
 
-1. **Run it first** and read the output carefully:
-   ```bash
-   python hotel_booking_system.py
-   ```
-   It asks one question. Press Enter to use the default, then try a few inputs of your own. Not every problem in this file is something a tool will flag, so pay attention to output that looks wrong.
+- Identify code-quality issues and potential programming errors.
+- Detect common security vulnerabilities.
+- Improve Python coding style and readability.
+- Fix at least four identified issues.
+- Verify the changes by rerunning the static analysis tools.
 
-2. **Install the tools:**
-   ```bash
-   pip install pylint bandit flake8
-   ```
+## 4. Tools Used
 
-3. **Run the analysis** and save the reports:
-   ```bash
-   pylint hotel_booking_system.py > pylint_report.txt
-   bandit -r hotel_booking_system.py > bandit_report.txt
-   flake8 hotel_booking_system.py > flake8_report.txt
-   ```
+### Pylint
+Pylint checks Python code quality, naming conventions, unused variables, programming practices, and potential errors.
 
-4. **Document the issues** in `issues.md` using this table (at least 4 rows, high and medium severity first):
+### Bandit
+Bandit scans Python source code for common security issues and potentially unsafe coding patterns.
 
-   | Issue | Type | Line(s) | Description | Fix Approach |
-   |-------|------|---------|-------------|--------------|
-   | ... | ... | ... | ... | ... |
+### Flake8
+Flake8 checks Python code style, formatting, whitespace, and compliance with PEP 8 guidelines.
 
-5. **Fix the code.** Fix at least 4 of the issues you documented, then rerun all three tools to confirm they are gone. Repeat until you are satisfied. The program should still do its job when you are done.
+## 5. Issues Identified and Fixes
 
-6. **Reflect.** Answer the four reflection questions from the handout in `reflection.md`.
+The following are examples of issues to document when they are confirmed in the original source code:
 
-## Deliverables
+- Mutable default arguments.
+- Overly broad exception handling.
+- Unsafe use of `eval()`.
+- Weak hashing algorithms.
+- Insecure random-number generation.
+- Unnecessary shell command execution.
+- Unused imports and variables.
+- File-handling and encoding improvements.
 
-1. `hotel_booking_system.py`: your cleaned version, with at least 4 issues fixed.
-2. `issues.md`: the completed issue table.
-3. `reflection.md`: your answers to the reflection questions.
+Refer to `issues.md` for the verified issue table, including descriptions and fix approaches.
 
-**Target:** aim for a Pylint score above 9.5 on your final file. A perfect 10.00/10 is very good.
+## 6. Installation
 
-Be ready to explain the bugs you found and how you fixed them. You may be called on to present.
+Ensure Python is installed, then install the required tools:
+
+```bash
+python -m pip install pylint bandit flake8
+```
+
+## 7. How to Run the Program
+
+Run the Hotel Booking System:
+
+```bash
+python hotel_booking_system.py
+```
+
+Follow any prompts displayed by the program.
+
+## 8. Static Code Analysis
+
+Run Pylint and save its output:
+
+```bash
+python -m pylint hotel_booking_system.py > pylint_report.txt
+```
+
+Run Bandit and save its output:
+
+```bash
+python -m bandit -r hotel_booking_system.py > bandit_report.txt
+```
+
+Run Flake8 and save its output:
+
+```bash
+python -m flake8 hotel_booking_system.py > flake8_report.txt
+```
+
+Review the generated reports to identify remaining issues.
+
+## 9. Results
+
+The final results should be recorded based on the actual reports generated after fixing the code.
+
+- **Pylint:** Check the final code-quality score in `pylint_report.txt`.
+- **Bandit:** Review the security findings in `bandit_report.txt`.
+- **Flake8:** Review any style violations in `flake8_report.txt`.
+
+An empty Flake8 report generally means that no violations were reported for the analyzed file.
+
+## 10. Project Deliverables
+
+| File | Description |
+|---|---|
+| `hotel_booking_system.py` | Updated Python program |
+| `issues.md` | Documented issues and fixes |
+| `reflection.md` | Reflection answers |
+| `pylint_report.txt` | Pylint analysis output |
+| `bandit_report.txt` | Bandit analysis output |
+| `flake8_report.txt` | Flake8 analysis output |
+| `README.md` | Project documentation |
+
+## 11. Conclusion
+
+This lab demonstrates how static code analysis can help identify programming issues, improve code readability, and detect potential security weaknesses. Fixing the identified issues and rerunning the tools helps verify improvements and supports the development of more maintainable Python software.
