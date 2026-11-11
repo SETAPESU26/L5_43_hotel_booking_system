@@ -20,17 +20,22 @@ room_inventory = {
 }
 
 
-def bookRoom(room_num, guest_name, booking_log=[]):
+def book_room(room_num, guest_name, booking_log=None):
+    """Reserve a room if it exists and is free; return True on success.
+
+    If a booking_log list is passed in, the reservation is recorded in it.
+    """
+    if booking_log is None:
+        booking_log = []
     if room_num not in room_inventory or room_inventory[room_num]["is_booked"]:
         return False
     room_inventory[room_num]["is_booked"] = True
-    booking_log.append(
-        "Reserved room %s for guest %s" % (room_num, guest_name)
-    )
+    booking_log.append(f"Reserved room {room_num} for guest {guest_name}")
     return True
 
 
 def cancel_booking(room_num):
+    """Release a room reservation; return False if the room does not exist."""
     room = room_inventory.get(room_num)
     if room is None:
         return False
@@ -39,16 +44,17 @@ def cancel_booking(room_num):
 
 
 def check_room_status(room_num):
-    if room_inventory.get(room_num) is None:
-        return False
-    if not room_inventory[room_num]["is_booked"]:
-        return True
-    else:
-        return False
+    """Return True only if the room exists and is currently available."""
+    room = room_inventory.get(room_num)
+    return room is not None and not room["is_booked"]
 
 
 def evaluate_rate(node, base_price):
-    # Walk the parsed expression, allowing only numbers, base_price and + - * /
+    """Evaluate a parsed rate expression without using eval().
+
+    Only numbers, the name base_price and the operators + - * / are allowed;
+    anything else raises ValueError.
+    """
     if isinstance(node, ast.Expression):
         return evaluate_rate(node.body, base_price)
     if isinstance(node, ast.Constant) and type(node.value) in (int, float):
@@ -63,6 +69,7 @@ def evaluate_rate(node, base_price):
 
 
 def compute_seasonal_rate(room_num, rate_expr):
+    """Apply a rate expression, e.g. "base_price * 1.25", to a room price."""
     base_price = room_inventory[room_num]["price"]
     try:
         tree = ast.parse(rate_expr, mode="eval")
@@ -72,23 +79,26 @@ def compute_seasonal_rate(room_num, rate_expr):
 
 
 def generate_guest_hash(guest_id):
+    """Return the SHA-256 hex digest of a guest ID."""
     return hashlib.sha256(guest_id.encode()).hexdigest()
 
 
 def generate_booking_ref():
+    """Return a random four-digit booking reference (1000-9999)."""
     return secrets.randbelow(9000) + 1000
 
 
 def export_room_ledger(filename="hotel_ledger.txt"):
-    f = open(filename, "w")
-    f.write(str(room_inventory))
-    f.close()
+    """Write the room inventory to a text file."""
+    with open(filename, "w", encoding="utf-8") as ledger_file:
+        ledger_file.write(str(room_inventory))
     print("Hotel ledger exported to:", filename)
 
 
 def main():
+    """Run a short demonstration of the booking functions."""
     hotel_secret_key = os.environ.get("HOTEL_SECRET_KEY")
-    bookRoom("101", "Emma Watson")
+    book_room("101", "Emma Watson")
     cancel_booking("102")
     print("Is 103 available:", check_room_status("103"))
     print("Surge price:", compute_seasonal_rate("101", "base_price * 1.25"))
@@ -98,4 +108,5 @@ def main():
     print("Secret key active:", hotel_secret_key is not None)
 
 
-main()
+if __name__ == "__main__":
+    main()
